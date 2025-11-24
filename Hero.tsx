@@ -1,15 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import SplashCursor from './SplashCursor';
 import BlobCursor from './BlobCursor';
-import Orb from './Orb';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-transparent pt-[28rem]">
-      {/* Orb Background behind text */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none z-0 opacity-80 scale-150 md:scale-100">
-        <Orb hoverIntensity={0.5} rotateOnHover={true} hue={0} forceHoverState={false} />
-      </div>
+    <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-slate-950 pt-[32rem]">
+      {/* Splash Cursor Background */}
+      <SplashCursor />
+      
+      {/* Radiant Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px] z-0 pointer-events-none"></div>
 
       <div className="container mx-auto px-4 relative z-10 text-center pointer-events-none">
         <motion.div
@@ -31,13 +32,13 @@ const Hero = () => {
                   zIndex={10}
                 />
              </div>
-             {/* Label overlay */}
+             {/* Optional Label or overlay text inside the blob area if desired, or leave empty for pure visual */}
              <div className="relative z-20 text-white/50 font-mono text-sm tracking-widest pointer-events-none select-none mix-blend-overlay">
                INTERACTIVE CORE
              </div>
           </div>
           
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter text-white mb-8 leading-tight relative">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter text-white mb-8 leading-tight">
             Imagine. <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-teal-400 animate-gradient">
               Describe. Done.

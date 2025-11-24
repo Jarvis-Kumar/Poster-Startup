@@ -1,14 +1,13 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Hero from './components/Hero';
 import FeatureMatrix from './components/FeatureMatrix';
 import { ALGORITHMS, USP_DATA, FLAGSHIP_FEATURES } from './constants';
 import { 
   ChevronRight, Cpu, Layers, Coins, Sparkles, 
-  Zap, Brain, Video, ShoppingBag, Gamepad2, Send, AlertTriangle
+  Zap, Brain, Video, ShoppingBag, Gamepad2, X, MessageSquare, Send
 } from 'lucide-react';
 import { BentoGrid, BentoCard } from './components/MagicBento';
-import SplashCursor from './components/SplashCursor';
 
 // Simple Header Component
 const Header = () => {
@@ -21,7 +20,7 @@ const Header = () => {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-500 ease-out ${scrolled ? 'bg-slate-950/80 backdrop-blur-md py-4' : 'bg-transparent pt-64 pb-8'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-500 ease-out ${scrolled ? 'bg-slate-950/90 backdrop-blur-md py-4' : 'bg-transparent pt-64 pb-8'}`}>
       <div className="container mx-auto px-4 flex justify-center items-center">
         <div className="flex items-center gap-4 group cursor-default">
           <div className={`relative transition-all duration-500 ${scrolled ? 'scale-75' : 'scale-100'}`}>
@@ -41,7 +40,7 @@ const Header = () => {
 
 // Flagship Section Component
 const Flagship = () => (
-  <section id="flagship" className="py-24 bg-transparent">
+  <section id="flagship" className="py-24 bg-slate-900">
     <div className="container mx-auto px-4">
       <div className="flex flex-col md:flex-row justify-between items-end mb-12">
         <div>
@@ -58,7 +57,7 @@ const Flagship = () => (
           <BentoCard 
             key={idx} 
             glowColor="168, 85, 247" // Purple
-            className="bg-slate-900/80 backdrop-blur-sm"
+            className="bg-slate-950"
           >
             <div className="flex flex-col h-full">
               <div className="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center mb-4 text-teal-400 border border-slate-800">
@@ -76,8 +75,8 @@ const Flagship = () => (
 
 // Algorithms & Tech Section
 const Technology = () => (
-  <section id="technology" className="py-24 bg-transparent relative">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-transparent to-transparent pointer-events-none"></div>
+  <section id="technology" className="py-24 bg-black relative">
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-transparent to-transparent"></div>
     <div className="container mx-auto px-4 relative z-10">
       <div className="text-center max-w-3xl mx-auto mb-16">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Powered by the Orchestrator Model</h2>
@@ -90,7 +89,7 @@ const Technology = () => (
         {ALGORITHMS.map((algo, idx) => (
           <BentoCard 
             key={idx} 
-            className="bg-slate-900/60 backdrop-blur-md"
+            className="bg-slate-900/50"
             glowColor="99, 102, 241" // Indigo
           >
             <div className="flex gap-6 h-full">
@@ -112,7 +111,7 @@ const Technology = () => (
 
 // USP Section
 const USPSection = () => {
-  const getIcon = (name) => {
+  const getIcon = (name: string) => {
     switch(name) {
       case 'Cpu': return <Cpu size={32} />;
       case 'Layers': return <Layers size={32} />;
@@ -122,11 +121,11 @@ const USPSection = () => {
   };
 
   return (
-    <section className="py-24 bg-transparent border-y border-white/5">
+    <section className="py-24 bg-slate-950 border-y border-slate-900">
       <div className="container mx-auto px-4">
         <BentoGrid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {USP_DATA.map((usp, idx) => (
-            <BentoCard key={idx} glowColor="20, 184, 166" className="bg-slate-900/40 backdrop-blur-sm">
+            <BentoCard key={idx} glowColor="20, 184, 166" className="bg-slate-900/20">
               <div className="text-center md:text-left h-full flex flex-col">
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900 text-white mb-6 border border-slate-800 shadow-lg">
                   {getIcon(usp.icon)}
@@ -144,13 +143,13 @@ const USPSection = () => {
 
 // Use Case Carousel (Simplified)
 const UseCases = () => (
-  <section className="py-24 bg-transparent">
+  <section className="py-24 bg-slate-900">
     <div className="container mx-auto px-4">
       <h2 className="text-3xl font-bold text-white mb-12 text-center">Built for Every Creator</h2>
       <BentoGrid className="grid grid-cols-1 md:grid-cols-3 gap-8">
         
         <BentoCard className="p-0 overflow-hidden group !border-0 !bg-transparent" glowColor="255, 50, 50">
-           <div className="relative h-full aspect-[4/5] rounded-2xl overflow-hidden bg-slate-950/60 backdrop-blur-sm border border-slate-800 flex flex-col items-center justify-center group-hover:border-red-500/30 transition-colors">
+           <div className="relative h-full aspect-[4/5] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 flex flex-col items-center justify-center group-hover:border-red-500/30 transition-colors">
              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/10 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
              <div className="p-6 rounded-full bg-slate-900 border border-slate-800 mb-8 group-hover:scale-110 transition-transform duration-500 group-hover:border-red-500/50 group-hover:shadow-[0_0_30px_rgba(220,38,38,0.3)]">
                 <Video className="w-12 h-12 text-red-500" strokeWidth={1.5} />
@@ -163,7 +162,7 @@ const UseCases = () => (
         </BentoCard>
         
         <BentoCard className="p-0 overflow-hidden group !border-0 !bg-transparent" glowColor="20, 184, 166">
-           <div className="relative h-full aspect-[4/5] rounded-2xl overflow-hidden bg-slate-950/60 backdrop-blur-sm border border-slate-800 flex flex-col items-center justify-center group-hover:border-teal-500/30 transition-colors">
+           <div className="relative h-full aspect-[4/5] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 flex flex-col items-center justify-center group-hover:border-teal-500/30 transition-colors">
              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-teal-900/10 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
              <div className="p-6 rounded-full bg-slate-900 border border-slate-800 mb-8 group-hover:scale-110 transition-transform duration-500 group-hover:border-teal-500/50 group-hover:shadow-[0_0_30px_rgba(20,184,166,0.3)]">
                 <ShoppingBag className="w-12 h-12 text-teal-400" strokeWidth={1.5} />
@@ -176,7 +175,7 @@ const UseCases = () => (
         </BentoCard>
 
         <BentoCard className="p-0 overflow-hidden group !border-0 !bg-transparent" glowColor="168, 85, 247">
-           <div className="relative h-full aspect-[4/5] rounded-2xl overflow-hidden bg-slate-950/60 backdrop-blur-sm border border-slate-800 flex flex-col items-center justify-center group-hover:border-purple-500/30 transition-colors">
+           <div className="relative h-full aspect-[4/5] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 flex flex-col items-center justify-center group-hover:border-purple-500/30 transition-colors">
              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
              <div className="p-6 rounded-full bg-slate-900 border border-slate-800 mb-8 group-hover:scale-110 transition-transform duration-500 group-hover:border-purple-500/50 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]">
                 <Gamepad2 className="w-12 h-12 text-purple-500" strokeWidth={1.5} />
@@ -192,54 +191,19 @@ const UseCases = () => (
   </section>
 );
 
-// Custom Feedback Form Component using fetch
-interface CustomFeedbackFormProps {
-  onSubmit?: () => void;
-}
-
-const CustomFeedbackForm = ({ onSubmit }: CustomFeedbackFormProps) => {
+// Custom Feedback Form Component
+const CustomFeedbackForm = ({ onSubmit }: { onSubmit?: () => void }) => {
   const [submitted, setSubmitted] = useState(false);
-  const [feedbackText, setFeedbackText] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const GOOGLE_FORM_ENTRY_ID: string = "entry.249260863"; 
+  // NOTE: This ID needs to be replaced with your actual Google Form entry ID 
+  // Inspect your Google Form, fill in an answer, inspect the network request to 'formResponse' 
+  // to find the exact entry.123456789 ID corresponding to the comment box.
+  const GOOGLE_FORM_ENTRY_ID = "entry.123456789"; 
   const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeer2bIGBCSm-3kzvmBBLkJb4aDvJZJ2ubgKC0Cm2AnXxyT6Q/formResponse";
 
-  const isConfigured = GOOGLE_FORM_ENTRY_ID !== "entry.123456789";
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Safety check mostly for dev environment
-    if (GOOGLE_FORM_ENTRY_ID === "entry.123456789") {
-      alert("Please update the code with your Google Form Entry ID.");
-      return;
-    }
-
-    if (!feedbackText.trim()) return;
-
-    setIsSubmitting(true);
-
-    try {
-      const formData = new FormData();
-      formData.append(GOOGLE_FORM_ENTRY_ID, feedbackText);
-
-      await fetch(GOOGLE_FORM_ACTION_URL, {
-        method: "POST",
-        mode: "no-cors", // Required to bypass CORS for Google Forms
-        body: formData,
-      });
-
-      // If we get here (no network error), assume success
-      setSubmitted(true);
-      setFeedbackText("");
-      if (onSubmit) onSubmit();
-    } catch (error) {
-      console.error("Form submission error:", error);
-      alert("Something went wrong connecting to the feedback server. Please try again later.");
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleSubmit = () => {
+    setSubmitted(true);
+    if(onSubmit) setTimeout(onSubmit, 2000);
   };
 
   if (submitted) {
@@ -249,51 +213,35 @@ const CustomFeedbackForm = ({ onSubmit }: CustomFeedbackFormProps) => {
           <Sparkles className="text-green-400" size={32} />
         </div>
         <h3 className="text-3xl font-bold text-white mb-2">Feedback Received!</h3>
-        <p className="text-slate-400 text-lg mb-8">Thank you for helping us improve AlgoEdit.</p>
-        
-        <button 
-          onClick={() => {
-            setSubmitted(false);
-            setFeedbackText(""); 
-          }}
-          className="px-10 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-full font-bold text-lg transition-all border border-slate-700 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 flex items-center gap-2"
-        >
-          Submit Another Response <ChevronRight size={20} />
-        </button>
+        <p className="text-slate-400 text-lg">Thank you for helping us improve AlgoEdit.</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full relative">
-      {!isConfigured && (
-        <div className="absolute top-0 right-0 bg-red-500/10 border border-red-500/50 text-red-400 text-xs p-2 rounded max-w-xs z-20 flex items-start gap-2">
-          <AlertTriangle size={14} className="mt-0.5 shrink-0" />
-          <span>Dev Note: You must replace 'entry.123456789' in App.tsx with your actual Form ID for this to work.</span>
-        </div>
-      )}
-      
+    <div className="w-full">
+      <iframe name="hidden_iframe" id="hidden_iframe" style={{display: 'none'}} onLoad={() => {}}></iframe>
       <form 
+        action={GOOGLE_FORM_ACTION_URL} 
+        method="POST" 
+        target="hidden_iframe"
         onSubmit={handleSubmit}
         className="flex flex-col gap-6"
       >
         <div>
-          <label className="block text-white text-5xl md:text-7xl font-black mb-8 tracking-tight drop-shadow-lg">Comments & Reviews</label>
+          <label className="block text-white text-5xl md:text-6xl font-black mb-6 tracking-tight">Comments & Reviews</label>
           <textarea 
-            value={feedbackText}
-            onChange={(e) => setFeedbackText(e.target.value)}
+            name={GOOGLE_FORM_ENTRY_ID}
             required
             placeholder="Share your thoughts on AlgoEdit..."
-            className="w-full h-80 bg-slate-900/80 border border-slate-800 rounded-2xl p-8 text-white text-xl placeholder-slate-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all resize-none shadow-inner disabled:opacity-50"
-            disabled={isSubmitting}
+            className="w-full h-80 bg-slate-900/80 border border-slate-800 rounded-xl p-6 text-white text-lg placeholder-slate-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all resize-none"
           ></textarea>
         </div>
         <button 
           type="submit"
-          disabled={isSubmitting}
-          className={`self-end px-12 py-5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xl rounded-2xl hover:shadow-xl hover:shadow-purple-500/25 transform hover:-translate-y-1 transition-all flex items-center gap-3 active:scale-95 ${isSubmitting ? 'opacity-70 cursor-wait' : ''}`}
+          className="self-end px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-lg rounded-xl hover:shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-0.5 transition-all flex items-center gap-2"
         >
-          {isSubmitting ? 'Sending...' : 'Submit Feedback'} <Send size={24} />
+          Submit Feedback <Send size={20} />
         </button>
       </form>
     </div>
@@ -302,15 +250,15 @@ const CustomFeedbackForm = ({ onSubmit }: CustomFeedbackFormProps) => {
 
 // Feedback / Response Section
 const FeedbackSection = () => (
-  <section className="py-32 bg-transparent border-t border-white/5 relative">
+  <section className="py-24 bg-slate-950 border-t border-slate-900 relative">
     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-64 bg-purple-900/20 blur-[100px] pointer-events-none"></div>
-    <div className="container mx-auto px-4 max-w-6xl relative z-10">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-white mb-4">Your Voice Matters</h2>
-        <p className="text-slate-400 text-lg">Help shape the future of creative AI.</p>
+    <div className="container mx-auto px-4 max-w-5xl relative z-10">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-white mb-3">Your Voice Matters</h2>
+        <p className="text-slate-400">Help shape the future of creative AI.</p>
       </div>
       
-      <BentoCard className="!p-8 md:!p-16 overflow-hidden bg-slate-950/80 backdrop-blur-xl border-slate-800 shadow-2xl" glowColor="132, 0, 255" disableAnimations={true}>
+      <BentoCard className="!p-8 md:!p-16 overflow-hidden bg-slate-950 border-slate-800 shadow-2xl" glowColor="132, 0, 255" disableAnimations={true}>
         <CustomFeedbackForm />
       </BentoCard>
     </div>
@@ -318,7 +266,7 @@ const FeedbackSection = () => (
 );
 
 const Footer = () => (
-  <footer className="bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent pt-20 pb-10 border-t border-slate-900">
+  <footer className="bg-black pt-20 pb-10 border-t border-slate-900">
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <div>

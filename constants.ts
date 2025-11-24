@@ -1,3 +1,4 @@
+import { FeatureCategory, Algorithm, USP } from './types';
 
 export const NAV_ITEMS = [
   { label: 'Mission', href: '#mission' },
@@ -7,7 +8,7 @@ export const NAV_ITEMS = [
   { label: 'Pricing', href: '#pricing' },
 ];
 
-export const USP_DATA = [
+export const USP_DATA: USP[] = [
   {
     title: '"Polo" Routing Engine',
     description: "Unlike competitors locked into one model, we route your prompt to the best engine (e.g., Stability for texture, Veo for motion) seamlessly.",
@@ -30,7 +31,7 @@ export const USP_DATA = [
   }
 ];
 
-export const ALGORITHMS = [
+export const ALGORITHMS: Algorithm[] = [
   {
     title: "Latent Diffusion Models",
     tech: "Creation Core",
@@ -66,7 +67,7 @@ export const FLAGSHIP_FEATURES = [
   { title: "Ideation Assistant", desc: "An AI co-pilot that helps you write the prompts." },
 ];
 
-export const FEATURE_CATEGORIES = [
+export const FEATURE_CATEGORIES: FeatureCategory[] = [
   {
     id: 'cat-a',
     name: 'Generative AI Core',

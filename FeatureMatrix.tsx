@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FEATURE_CATEGORIES } from '../constants';
@@ -11,10 +10,10 @@ const FeatureMatrix = () => {
   const activeCategory = FEATURE_CATEGORIES.find((c) => c.id === activeTab);
 
   return (
-    <section id="features" className="py-24 bg-transparent relative overflow-hidden">
-      {/* Background decorative blobs - subtle since we have global splash */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-purple-900/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-900/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+    <section id="features" className="py-24 bg-slate-950 relative overflow-hidden">
+      {/* Background decorative blobs */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-900/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
@@ -35,7 +34,7 @@ const FeatureMatrix = () => {
               className={`px-4 py-2 rounded-full text-sm md:text-base font-medium transition-all duration-300 ${
                 activeTab === cat.id
                   ? 'bg-white text-slate-950 shadow-lg shadow-white/10 scale-105'
-                  : 'bg-slate-900/50 backdrop-blur-sm text-slate-400 hover:text-white hover:bg-slate-800/80 border border-slate-800'
+                  : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
               }`}
             >
               {cat.name}
@@ -57,7 +56,7 @@ const FeatureMatrix = () => {
                 <BentoCard 
                   key={idx} 
                   glowColor="20, 184, 166" // Teal
-                  className="bg-slate-900/40 backdrop-blur-sm hover:bg-slate-800/60"
+                  className="bg-slate-900/50 hover:bg-slate-800/80"
                 >
                   <div className="flex items-start gap-4 h-full">
                     <div className="mt-1 flex-shrink-0">

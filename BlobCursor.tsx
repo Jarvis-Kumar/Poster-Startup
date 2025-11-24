@@ -1,6 +1,28 @@
-
 import React, { useRef, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
+
+interface BlobCursorProps {
+  blobType?: 'circle' | 'square';
+  fillColor?: string;
+  trailCount?: number;
+  sizes?: number[];
+  innerSizes?: number[];
+  innerColor?: string;
+  opacities?: number[];
+  shadowColor?: string;
+  shadowBlur?: number;
+  shadowOffsetX?: number;
+  shadowOffsetY?: number;
+  filterId?: string;
+  filterStdDeviation?: number;
+  filterColorMatrixValues?: string;
+  useFilter?: boolean;
+  fastDuration?: number;
+  slowDuration?: number;
+  fastEase?: string;
+  slowEase?: string;
+  zIndex?: number;
+}
 
 export default function BlobCursor({
   blobType = 'circle',
@@ -23,9 +45,9 @@ export default function BlobCursor({
   fastEase = 'power3.out',
   slowEase = 'power1.out',
   zIndex = 100
-}) {
-  const containerRef = useRef(null);
-  const blobsRef = useRef([]);
+}: BlobCursorProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const blobsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const updateOffset = useCallback(() => {
     if (!containerRef.current) return { left: 0, top: 0 };
@@ -34,14 +56,14 @@ export default function BlobCursor({
   }, []);
 
   const handleMove = useCallback(
-    (e) => {
+    (e: React.MouseEvent | React.TouchEvent | MouseEvent | TouchEvent) => {
       const { left, top } = updateOffset();
       let x = 0;
       let y = 0;
 
       if ('clientX' in e) {
-        x = e.clientX;
-        y = e.clientY;
+        x = (e as MouseEvent).clientX;
+        y = (e as MouseEvent).clientY;
       } else if ('touches' in e && e.touches.length > 0) {
         x = e.touches[0].clientX;
         y = e.touches[0].clientY;
@@ -66,13 +88,13 @@ export default function BlobCursor({
   useEffect(() => {
     const onResize = () => updateOffset();
     window.addEventListener('resize', onResize);
-    window.addEventListener('mousemove', handleMove); // Global listener for smoother cursor tracking
-    window.addEventListener('touchmove', handleMove);
+    window.addEventListener('mousemove', handleMove as any); // Global listener for smoother cursor tracking
+    window.addEventListener('touchmove', handleMove as any);
 
     return () => {
       window.removeEventListener('resize', onResize);
-      window.removeEventListener('mousemove', handleMove);
-      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('mousemove', handleMove as any);
+      window.removeEventListener('touchmove', handleMove as any);
     };
   }, [updateOffset, handleMove]);
 

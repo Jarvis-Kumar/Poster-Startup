@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
 
@@ -7,7 +6,7 @@ const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = '132, 0, 255'; // Purple
 const MOBILE_BREAKPOINT = 768;
 
-const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {
+const createParticleElement = (x: number, y: number, color: string = DEFAULT_GLOW_COLOR) => {
   const el = document.createElement('div');
   el.className = 'particle';
   el.style.cssText = `
@@ -26,12 +25,12 @@ const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {
   return el;
 };
 
-const calculateSpotlightValues = (radius) => ({
+const calculateSpotlightValues = (radius: number) => ({
   proximity: radius * 0.5,
   fadeDistance: radius * 0.75
 });
 
-const updateCardGlowProperties = (card, mouseX, mouseY, glow, radius) => {
+const updateCardGlowProperties = (card: HTMLElement, mouseX: number, mouseY: number, glow: number, radius: number) => {
   const rect = card.getBoundingClientRect();
   const relativeX = ((mouseX - rect.left) / rect.width) * 100;
   const relativeY = ((mouseY - rect.top) / rect.height) * 100;
@@ -53,7 +52,18 @@ const useMobileDetection = () => {
   return isMobile;
 };
 
-export const BentoCard = ({
+interface BentoCardProps {
+  children: React.ReactNode;
+  className?: string;
+  particleCount?: number;
+  glowColor?: string;
+  enableTilt?: boolean;
+  enableMagnetism?: boolean;
+  clickEffect?: boolean;
+  disableAnimations?: boolean;
+}
+
+export const BentoCard: React.FC<BentoCardProps> = ({
   children,
   className = '',
   particleCount = DEFAULT_PARTICLE_COUNT,
@@ -63,13 +73,13 @@ export const BentoCard = ({
   clickEffect = true,
   disableAnimations = false,
 }) => {
-  const cardRef = useRef(null);
-  const particlesRef = useRef([]);
-  const timeoutsRef = useRef([]);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const particlesRef = useRef<HTMLElement[]>([]);
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const isHoveredRef = useRef(false);
-  const memoizedParticles = useRef([]);
+  const memoizedParticles = useRef<HTMLElement[]>([]);
   const particlesInitialized = useRef(false);
-  const magnetismAnimationRef = useRef(null);
+  const magnetismAnimationRef = useRef<gsap.core.Tween | null>(null);
   const isMobile = useMobileDetection();
 
   const shouldDisable = disableAnimations || isMobile;
@@ -77,7 +87,7 @@ export const BentoCard = ({
   const initializeParticles = useCallback(() => {
     if (particlesInitialized.current || !cardRef.current) return;
     const { width, height } = cardRef.current.getBoundingClientRect();
-    memoizedParticles.current = Array.from({ length: particleCount }, () =>
+    memoizedParticles.current = Array.from({ length: particleCount! }, () =>
       createParticleElement(Math.random() * width, Math.random() * height, glowColor)
     );
     particlesInitialized.current = true;
@@ -95,7 +105,7 @@ export const BentoCard = ({
         duration: 0.3,
         ease: 'back.in(1.7)',
         onComplete: () => {
-          if (particle.parentNode) particle.parentNode.removeChild(particle);
+          particle.parentNode?.removeChild(particle);
         }
       });
     });
@@ -113,8 +123,8 @@ export const BentoCard = ({
       const timeoutId = setTimeout(() => {
         if (!isHoveredRef.current || !cardRef.current) return;
 
-        const clone = particle.cloneNode(true);
-        cardRef.current.appendChild(clone);
+        const clone = particle.cloneNode(true) as HTMLElement;
+        cardRef.current!.appendChild(clone);
         particlesRef.current.push(clone);
 
         gsap.fromTo(clone, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' });
@@ -166,7 +176,7 @@ export const BentoCard = ({
       }
     };
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!enableTilt && !enableMagnetism) return;
       const rect = element.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -175,7 +185,7 @@ export const BentoCard = ({
       const centerY = rect.height / 2;
 
       if (enableTilt) {
-        const rotateX = ((y - centerY) / centerY) * -5;
+        const rotateX = ((y - centerY) / centerY) * -5; // Reduced tilt intensity
         const rotateY = ((x - centerX) / centerX) * 5;
         gsap.to(element, { rotateX, rotateY, duration: 0.1, ease: 'power2.out', transformPerspective: 1000 });
       }
@@ -187,7 +197,7 @@ export const BentoCard = ({
       }
     };
 
-    const handleClick = (e) => {
+    const handleClick = (e: MouseEvent) => {
       if (!clickEffect) return;
       const rect = element.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -235,15 +245,23 @@ export const BentoCard = ({
   );
 };
 
-export const BentoGrid = ({
+interface BentoGridProps {
+  children: React.ReactNode;
+  className?: string;
+  spotlightRadius?: number;
+  glowColor?: string;
+  enabled?: boolean;
+}
+
+export const BentoGrid: React.FC<BentoGridProps> = ({
   children,
   className = '',
   spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
   glowColor = DEFAULT_GLOW_COLOR,
   enabled = true
 }) => {
-  const gridRef = useRef(null);
-  const spotlightRef = useRef(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const spotlightRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useMobileDetection();
 
   useEffect(() => {
@@ -271,9 +289,10 @@ export const BentoGrid = ({
     document.body.appendChild(spotlight);
     spotlightRef.current = spotlight;
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!spotlightRef.current || !gridRef.current) return;
       
+      // Check if mouse is near the grid area to activate spotlight
       const gridRect = gridRef.current.getBoundingClientRect();
       const buffer = 100;
       const isNear = e.clientX >= gridRect.left - buffer && 
@@ -283,13 +302,13 @@ export const BentoGrid = ({
 
       if (!isNear) {
          gsap.to(spotlightRef.current, { opacity: 0, duration: 0.3 });
-         const cards = gridRef.current.querySelectorAll('.magic-bento-card');
+         const cards = gridRef.current.querySelectorAll('.magic-bento-card') as NodeListOf<HTMLElement>;
          cards.forEach(card => card.style.setProperty('--glow-intensity', '0'));
          return;
       }
 
       const { proximity, fadeDistance } = calculateSpotlightValues(spotlightRadius);
-      const cards = gridRef.current.querySelectorAll('.magic-bento-card');
+      const cards = gridRef.current.querySelectorAll('.magic-bento-card') as NodeListOf<HTMLElement>;
 
       cards.forEach(card => {
         const rect = card.getBoundingClientRect();
@@ -328,9 +347,7 @@ export const BentoGrid = ({
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
-      if (spotlightRef.current && spotlightRef.current.parentNode) {
-        spotlightRef.current.parentNode.removeChild(spotlightRef.current);
-      }
+      spotlightRef.current?.parentNode?.removeChild(spotlightRef.current);
     };
   }, [enabled, spotlightRadius, glowColor, isMobile]);
 
